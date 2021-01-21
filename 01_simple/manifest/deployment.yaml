@@ -17,5 +17,6 @@ spec:
       containers:
       - name: app
         image: app # 手元でビルドした app コンテナのイメージ名
+        imagePullPolicy: IfNotPresent # 先にローカルにimageが存在するかをチェックする
         ports:
         - containerPort: 1234 # appコンテナのlistenポート
