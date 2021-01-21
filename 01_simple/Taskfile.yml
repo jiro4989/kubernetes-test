@@ -20,3 +20,9 @@ tasks:
     cmds:
       - task: build:app
       - task: k8s:apply
+
+  check:
+    desc: "Podsとの疎通確認を行う"
+    cmds:
+      - kubectl get pods
+      - curl http://localhost:30001
