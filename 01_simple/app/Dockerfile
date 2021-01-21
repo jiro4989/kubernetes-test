@@ -4,7 +4,7 @@ WORKDIR /app
 COPY . /app
 RUN go build .
 
-FROM alpine3.13 AS runtime
+FROM alpine:3.13 AS runtime
 
 COPY --from=builder /app/app /app
 
