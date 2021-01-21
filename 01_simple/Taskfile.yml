@@ -1,0 +1,8 @@
+version: '3'
+
+tasks:
+  build:app:
+    desc: "appコンテナのイメージをビルドする"
+    dir: app
+    cmds:
+      - docker build -t app .
