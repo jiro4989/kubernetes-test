@@ -6,3 +6,17 @@ tasks:
     dir: app
     cmds:
       - docker build -t app .
+
+  k8s:apply:
+    desc: "マニフェストファイルをKubernetesクラスタに適用する"
+    dir: manifest
+    cmds:
+      - kubectl apply -f service.yaml
+      - kubectl apply -f deployment.yaml
+      - kubectl get all
+
+  run:
+    desc: "appコンテナをビルドしてKubernetesクラスタに適用する"
+    cmds:
+      - task: build:app
+      - task: k8s:apply
