@@ -11,7 +11,7 @@ import (
 func handler(w http.ResponseWriter, r *http.Request) {
   fmt.Fprintf(w, "Hello, World")
 
-  b, err := ioutil.ReadFile("/app/data.json")
+  b, err := ioutil.ReadFile("/etc/app/config.json")
   if err != nil {
     panic(err)
   }
