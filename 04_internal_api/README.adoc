@@ -1,39 +1,30 @@
-= 03_namespace
+= 04_internal_api
 :toc: left
 :sectnums:
 
-一つ前のサンプルで3つもリソースを作成した。
-今後もリソースは増えていくことが予想されるので、
-リソースの削除をする時が面倒になる。
+ホストPCからはアクセスできないけれど、Kubernetesクラスタ内部からはアクセス可能なサービスを追加し、Pod間通信を行えるようにする。
 
-KubernetesのNamespaceを使ってリソースを名前空間で分離する。
-このサンプルでは local という名前空間を作成する。
+appコンテナはホストからアクセス可能にするためにServiceをNodePortにした。
+internal-apiコンテナはクラスタ内部からアクセスできれば良いのでNodePortにする必要はないため、デフォルト設定値を採用。
+クラスタ内部からのアクセスにはServiceのnameとportでアクセスする。
+
+別Podからのアクセスのときは通信先Serviceの `http://<name>:<port>` でアクセスする。
+通信先のServiceからは対象Podのポート(targetPort)に対して通信を流すことになる。
+
+よって、appコンテナからは直接対象Service名＋PodのListenポートでアクセスするのではなく、Service名＋ServiceのListenポートにアクセスする点に注意する。
 
 == 用語
 
-=== Namespace
-
-名前空間のスコープを扱うリソース。
-名前空間内では各種リソース名はユニークである必要があるが、
-別名前空間内のリソース名と重複しても名前の衝突が発生しなくなる。
-
-名前空間内にリソースを作成すると、名前空間を削除することでその名前空間内のリソー
-スがまとめて削除される。
-
-https://kubernetes.io/ja/docs/concepts/overview/working-with-objects/namespaces/
+なし
 
 == 構成
 
 |======
 | ディレクトリ | 説明
 | app | シンプルなGoのWebサーバ。1234ポートをlistenする
+| internal-api | 内部API。1235ポートをlistenする
 | manifest | Kubernetesのマニフェスト置き場
 |======
-
-== 操作方法
-
-`kubectl get all -n <NAMESPACE>` という具合に `-n` で名前空間名を指定して操作す
-る。名前空間の作成は `kubectl create namespace <NAMESPACE>` を実行する。
 
 == 動作方法
 
