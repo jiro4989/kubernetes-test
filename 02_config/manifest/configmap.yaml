@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app
+data:
+  SERVER_PORT: "1234"
+  JSON_DATA: |
+    {
+      "name":"app",
+      "version":"v1.0.1"
+    }
