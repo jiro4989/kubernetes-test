@@ -1,0 +1,46 @@
+= 02_config
+:toc: left
+:sectnums:
+
+Webアプリケーション内に環境変数と設定ファイルをConfigMapを使って渡す。
+設定としてはconfigmap.yamlが新しく増えた。
+
+== 用語
+
+=== ConfigMap
+
+Kubernetesが持っている設定値とかを保持できるリソース。
+環境変数としてコンテナにわたすことも可能だし、ファイルとしてコンテナ内にマウントすることもできる。
+
+このサンプルでは環境変数として渡す `envFrom` とファイルとしてマウントする `volumeMounts` の両方をDeploymentに設定している。
+
+== 構成
+
+|======
+| ディレクトリ | 説明
+| app | シンプルなGoのWebサーバ。1234ポートをlistenする
+| manifest | Kubernetesのマニフェスト置き場
+|======
+
+== 動作方法
+
+taskコマンドを使ってKubernetesを操作します。
+処理内容についてはTaskfile.ymlを見てください。
+
+.appコンテナのビルドとKubernetesクラスタへの適用
+[source,bash]
+----
+task run
+----
+
+.クラスタの状態確認と、起動しているPodsへの疎通確認
+[source,bash]
+----
+task check
+----
+
+.クラスタに作った各種リソースの削除
+[source,bash]
+----
+task k8s:clear
+----
