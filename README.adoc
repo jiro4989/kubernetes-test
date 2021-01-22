@@ -8,7 +8,7 @@ Kubernetesの勉強をするためのリポジトリ。
 == 検証環境
 
 |===============
-|OS | Windows 10 home
+|OS | Windows 10 home (WSL2)
 |Docker | 19.03
 |===============
 
