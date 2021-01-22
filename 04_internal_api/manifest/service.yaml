@@ -17,11 +17,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: internal_api
+  name: internal-api
 spec:
   selector:
-    app: internal_api
+    app: internal-api
   ports:
   - protocol: TCP
     port: 80
-    targetPort: 1235 # internal_apiコンテナのlistenポート
+    targetPort: 1235 # internal-apiコンテナのlistenポート

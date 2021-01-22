@@ -51,8 +51,8 @@ func main() {
   }
 
   // validation
-  inPort = os.Getenv("INTERNAL_API_PORT")
-  _, err := strconv.Atoi(inPort)
+  inPort := os.Getenv("INTERNAL_API_PORT")
+  _, err = strconv.Atoi(inPort)
   if err != nil {
     panic(err)
   }

@@ -2,7 +2,7 @@ FROM golang:1.15.7-alpine3.13 AS builder
 
 WORKDIR /app
 COPY . /app
-RUN go build .
+RUN go build -o app .
 
 FROM alpine:3.13 AS runtime
 

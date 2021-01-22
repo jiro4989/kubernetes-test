@@ -37,25 +37,25 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: internal_api
+  name: internal-api
   labels:
-    app: internal_api
+    app: internal-api
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: internal_api
+      app: internal-api
   template:
     metadata:
       labels:
-        app: internal_api
+        app: internal-api
     spec:
       containers:
-      - name: internal_api
-        image: internal_api # 手元でビルドした app コンテナのイメージ名
+      - name: internal-api
+        image: internal-api # 手元でビルドした app コンテナのイメージ名
         imagePullPolicy: IfNotPresent # 先にローカルにimageが存在するかをチェックする
         ports:
         - containerPort: 1235 # appコンテナのlistenポート
         env:
         - name: SERVER_PORT
-          value: 1235
+          value: "1235"

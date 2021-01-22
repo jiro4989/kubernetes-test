@@ -8,7 +8,7 @@ tasks:
     desc: "必要なすべてのコンテナのイメージをビルドする"
     cmds:
       - task: build:app
-      - task: build:internal_api
+      - task: build:internal-api
 
   build:app:
     desc: "appコンテナのイメージをビルドする"
@@ -16,11 +16,11 @@ tasks:
     cmds:
       - docker build -t app .
 
-  build:internal_api:
-    desc: "internal_apiコンテナのイメージをビルドする"
-    dir: internal_api
+  build:internal-api:
+    desc: "internal-apiコンテナのイメージをビルドする"
+    dir: internal-api
     cmds:
-      - docker build -t internal_api .
+      - docker build -t internal-api .
 
   k8s:create:namespace:
     desc: "名前空間を作成する"
