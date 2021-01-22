@@ -1,0 +1,73 @@
+version: '3'
+
+vars:
+  NAMESPACE: local
+
+tasks:
+  build:all:
+    desc: "必要なすべてのコンテナのイメージをビルドする"
+    cmds:
+      - task: build:app
+      - task: build:internal-api
+
+  build:app:
+    desc: "appコンテナのイメージをビルドする"
+    dir: app
+    cmds:
+      - docker build -t app .
+
+  build:internal-api:
+    desc: "internal-apiコンテナのイメージをビルドする"
+    dir: internal-api
+    cmds:
+      - docker build -t internal-api .
+
+  k8s:create:namespace:
+    desc: "名前空間を作成する"
+    dir: manifest
+    cmds:
+      - kubectl create namespace {{.NAMESPACE}}
+    status:
+      - kubectl get namespace {{.NAMESPACE}}
+
+  k8s:delete:namespace:
+    desc: "名前空間を削除する"
+    dir: manifest
+    cmds:
+      - kubectl delete namespace {{.NAMESPACE}}
+
+  k8s:apply:
+    desc: "マニフェストファイルをKubernetesクラスタに適用する"
+    dir: manifest
+    cmds:
+      - kubectl apply -f configmap.yaml -n {{.NAMESPACE}}
+      - kubectl apply -f deployment.yaml -n {{.NAMESPACE}}
+      - kubectl apply -f service.yaml -n {{.NAMESPACE}}
+      - sleep 3
+      - task: k8s:get:all
+
+  k8s:clear:
+    desc: "作成したリソースを削除する"
+    dir: manifest
+    cmds:
+      - task: k8s:delete:namespace
+      - task: k8s:get:all
+
+  k8s:get:all:
+    desc: "名前空間配下のすべてのリソースを表示する"
+    dir: manifest
+    cmds:
+      - kubectl get all -n {{.NAMESPACE}}
+
+  run:
+    desc: "appコンテナをビルドしてKubernetesクラスタに適用する"
+    cmds:
+      - task: build:all
+      - task: k8s:create:namespace
+      - task: k8s:apply
+
+  check:
+    desc: "Podsとの疎通確認を行う"
+    cmds:
+      - kubectl get pods -n {{.NAMESPACE}}
+      - curl http://localhost:30001
