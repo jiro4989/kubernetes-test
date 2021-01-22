@@ -1,4 +1,6 @@
 = kubernetes-test
+:toc: left
+:sectnums:
 
 Kubernetesの勉強をするためのリポジトリ。
 作業記録とか。

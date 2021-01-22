@@ -1,4 +1,6 @@
 = 01_simple
+:toc: left
+:sectnums:
 
 最小構成でWebアプリケーションをKubernetesで動かす。
 
