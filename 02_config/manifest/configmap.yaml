@@ -4,7 +4,15 @@ metadata:
   name: app
 data:
   SERVER_PORT: "1234"
-  JSON_DATA: |
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-volume
+data:
+  config.json: |
     {
       "name":"app",
       "version":"v1.0.1"
