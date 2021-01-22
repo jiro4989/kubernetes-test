@@ -1,0 +1,68 @@
+= 01_simple
+:toc: left
+:sectnums:
+
+最小構成でWebアプリケーションをKubernetesで動かす。
+
+== 用語
+
+=== Pods
+
+Kubernetesのクラスタ上で動作するコンテナ。
+
+Pod単体だとクラスタ内からしか相互に通信できない。
+
+=== Deployment
+
+Kubernetestクラスタにデプロイするコンテナの設定を定義したリソース。
+
+コンテナの起動数や使うimage、コンテナにわたす環境変数など様々な設定を行う。
+
+DeploymentをKubernetesクラスタに適用することでPodsがKubernetesクラスタ上で起動し始める。
+
+=== Service
+
+Podsを取りまとめて外部からアクセス可能にするリソース。
+
+前述の通りPods単体では外部からアクセスできないため、
+WebサーバなどをKubernetesクラスタ上で動作させて外部からアクセスさせたい場合は
+Serviceもセットで作らなければならない。
+
+=== マニフェスト
+
+Kubernetesクラスタに適用するリソースの設定を定義したYAMLファイルのこと。
+このYAML内の `kind` の値によって、そのマニフェストが何のリソースを作るかが決まる。
+
+- `kind: Deployment` → Deploymentリソース
+- `kind: Service` → Serviceリソース
+
+== 構成
+
+|======
+| ディレクトリ | 説明
+| app | シンプルなGoのWebサーバ。1234ポートをlistenする
+| manifest | Kubernetesのマニフェスト置き場
+|======
+
+== 動作方法
+
+taskコマンドを使ってKubernetesを操作します。
+処理内容についてはTaskfile.ymlを見てください。
+
+.appコンテナのビルドとKubernetesクラスタへの適用
+[source,bash]
+----
+task run
+----
+
+.クラスタの状態確認と、起動しているPodsへの疎通確認
+[source,bash]
+----
+task check
+----
+
+.クラスタに作った各種リソースの削除
+[source,bash]
+----
+task k8s:clear
+----

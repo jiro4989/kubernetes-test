@@ -1,0 +1,38 @@
+version: '3'
+
+tasks:
+  build:app:
+    desc: "appコンテナのイメージをビルドする"
+    dir: app
+    cmds:
+      - docker build -t app .
+
+  k8s:apply:
+    desc: "マニフェストファイルをKubernetesクラスタに適用する"
+    dir: manifest
+    cmds:
+      - kubectl apply -f service.yaml
+      - kubectl apply -f deployment.yaml
+      - sleep 3
+      - kubectl get all
+
+  k8s:clear:
+    desc: "作成したリソースを削除する"
+    dir: manifest
+    cmds:
+      - kubectl delete -f service.yaml
+      - kubectl delete -f deployment.yaml
+      - sleep 3
+      - kubectl get all
+
+  run:
+    desc: "appコンテナをビルドしてKubernetesクラスタに適用する"
+    cmds:
+      - task: build:app
+      - task: k8s:apply
+
+  check:
+    desc: "Podsとの疎通確認を行う"
+    cmds:
+      - kubectl get pods
+      - curl http://localhost:30001
