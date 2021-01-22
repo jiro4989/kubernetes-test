@@ -11,3 +11,17 @@ spec:
     port: 80
     targetPort: 1234 # appコンテナのlistenポート
     nodePort: 30001 # ホストPCに公開するポート。30000-32767 の範囲で指定可能
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: internal_api
+spec:
+  selector:
+    app: internal_api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 1235 # internal_apiコンテナのlistenポート
