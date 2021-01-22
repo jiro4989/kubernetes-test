@@ -22,4 +22,7 @@ Server Version: version.Info{Major:"1", Minor:"19", GitVersion:"v1.19.3", GitCom
 
 以下のツールが必要です
 
-- https://github.com/go-task/task[go-task]
+|===========
+| ツール | 説明
+| https://github.com/go-task/task[go-task] | タスクランナー。Kubernetesとは関係ない。便利なので入れる
+|===========
