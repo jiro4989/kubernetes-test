@@ -11,8 +11,9 @@ tasks:
     desc: "マニフェストファイルをKubernetesクラスタに適用する"
     dir: manifest
     cmds:
-      - kubectl apply -f service.yaml
+      - kubectl apply -f configmap.yaml
       - kubectl apply -f deployment.yaml
+      - kubectl apply -f service.yaml
       - sleep 3
       - kubectl get all
 
@@ -20,8 +21,9 @@ tasks:
     desc: "作成したリソースを削除する"
     dir: manifest
     cmds:
-      - kubectl delete -f service.yaml
+      - kubectl delete -f configmap.yaml
       - kubectl delete -f deployment.yaml
+      - kubectl delete -f service.yaml
       - sleep 3
       - kubectl get all
 
