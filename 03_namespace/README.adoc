@@ -1,18 +1,26 @@
-= 02_config
+= 03_namespace
 :toc: left
 :sectnums:
 
-Webアプリケーション内に環境変数と設定ファイルをConfigMapを使って渡す。
-設定としてはconfigmap.yamlが新しく増えた。
+一つ前のサンプルで3つもリソースを作成した。
+今後もリソースは増えていくことが予想されるので、
+リソースの削除をする時が面倒になる。
+
+KubernetesのNamespaceを使ってリソースを名前空間で分離する。
+このサンプルでは local という名前空間を作成する。
 
 == 用語
 
-=== ConfigMap
+=== Namespace
 
-Kubernetesが持っている設定値とかを保持できるリソース。
-環境変数としてコンテナにわたすことも可能だし、ファイルとしてコンテナ内にマウントすることもできる。
+名前空間のスコープを扱うリソース。
+名前空間内では各種リソース名はユニークである必要があるが、
+別名前空間内のリソース名と重複しても名前の衝突が発生しなくなる。
 
-このサンプルでは環境変数として渡す `envFrom` とファイルとしてマウントする `volumeMounts` の両方をDeploymentに設定している。
+名前空間内にリソースを作成すると、名前空間を削除することでその名前空間内のリソー
+スがまとめて削除される。
+
+https://kubernetes.io/ja/docs/concepts/overview/working-with-objects/namespaces/
 
 == 構成
 
@@ -21,6 +29,11 @@ Kubernetesが持っている設定値とかを保持できるリソース。
 | app | シンプルなGoのWebサーバ。1234ポートをlistenする
 | manifest | Kubernetesのマニフェスト置き場
 |======
+
+== 操作方法
+
+`kubectl get all -n <NAMESPACE>` という具合に `-n` で名前空間名を指定して操作す
+る。名前空間の作成は `kubectl create namespace <NAMESPACE>` を実行する。
 
 == 動作方法
 
