@@ -20,3 +20,14 @@ spec:
         imagePullPolicy: IfNotPresent # 先にローカルにimageが存在するかをチェックする
         ports:
         - containerPort: 1234 # appコンテナのlistenポート
+        envFrom:
+        - configMapRef:
+            name: app
+        volumeMounts:
+        - name: app-volume
+          mountPath: /etc/app
+      volumes:
+        # configmap.yamlで作成するConfigMapを設定
+        - name: app-volume
+          configMap:
+            name: app-volume
