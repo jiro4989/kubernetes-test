@@ -4,6 +4,8 @@ metadata:
   name: app
 data:
   SERVER_PORT: "1234"
+  INTERNAL_API_HOST: "internal_api"
+  INTERNAL_API_PORT: "1235"
 
 ---
 

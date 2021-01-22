@@ -31,3 +31,31 @@ spec:
         - name: app-volume
           configMap:
             name: app-volume
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: internal_api
+  labels:
+    app: internal_api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: internal_api
+  template:
+    metadata:
+      labels:
+        app: internal_api
+    spec:
+      containers:
+      - name: internal_api
+        image: internal_api # 手元でビルドした app コンテナのイメージ名
+        imagePullPolicy: IfNotPresent # 先にローカルにimageが存在するかをチェックする
+        ports:
+        - containerPort: 1235 # appコンテナのlistenポート
+        env:
+        - name: SERVER_PORT
+          value: 1235

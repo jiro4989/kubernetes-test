@@ -2,20 +2,13 @@ package main
 
 import (
   "os"
-  "io/ioutil"
   "strconv"
   "fmt"
   "net/http"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-  fmt.Fprintf(w, "Hello, World")
-
-  b, err := ioutil.ReadFile("/etc/app/config.json")
-  if err != nil {
-    panic(err)
-  }
-  fmt.Fprintf(w, string(b))
+  fmt.Fprintf(w, "Hello, InternalAPI")
 }
 
 func main() {
