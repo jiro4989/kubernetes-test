@@ -2,12 +2,29 @@ version: '3'
 
 vars:
   NAMESPACE: local
+  HELM_VERSION: v3.5.0
 
 tasks:
   setup:
     desc: "必要な外部コマンドをインストールする"
     cmds:
-      - snap install helm --classic
+      - task: install:helm
+
+  install:helm:
+    desc: "helmをインストールする"
+    dir: /usr/local/src
+    cmds:
+      - sudo install -m 0755 -o $USER -g $USER -d helm/{{.HELM_VERSION}}
+      - |
+        set -eu
+
+        cd helm/{{.HELM_VERSION}}
+        wget https://get.helm.sh/helm-{{.HELM_VERSION}}-linux-amd64.tar.gz
+        tar xzf helm-{{.HELM_VERSION}}-linux-amd64.tar.gz
+        chmod +x linux-amd64/helm
+        sudo ln -sfn $PWD/linux-amd64/helm /usr/local/bin/helm
+    status:
+      - which helm
 
   build:all:
     desc: "必要なすべてのコンテナのイメージをビルドする"
