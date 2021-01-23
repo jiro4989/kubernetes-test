@@ -1,0 +1,50 @@
+= 04_internal_api
+:toc: left
+:sectnums:
+
+ホストPCからはアクセスできないけれど、Kubernetesクラスタ内部からはアクセス可能なサービスを追加し、Pod間通信を行えるようにする。
+
+appコンテナはホストからアクセス可能にするためにServiceをNodePortにした。
+internal-apiコンテナはクラスタ内部からアクセスできれば良いのでNodePortにする必要はないため、デフォルト設定値を採用。
+クラスタ内部からのアクセスにはServiceのnameとportでアクセスする。
+
+別Podからのアクセスのときは通信先Serviceの `http://<name>:<port>` でアクセスする。
+通信先のServiceからは対象Podのポート(targetPort)に対して通信を流すことになる。
+
+よって、appコンテナからは直接対象Service名＋PodのListenポートでアクセスするのではなく、Service名＋ServiceのListenポートにアクセスする点に注意する。
+
+== 用語
+
+なし
+
+== 構成
+
+|======
+| ディレクトリ | 説明
+| app | シンプルなGoのWebサーバ。1234ポートをlistenする
+| internal-api | 内部API。1235ポートをlistenする
+| manifest | Kubernetesのマニフェスト置き場
+|======
+
+== 動作方法
+
+taskコマンドを使ってKubernetesを操作します。
+処理内容についてはTaskfile.ymlを見てください。
+
+.appコンテナのビルドとKubernetesクラスタへの適用
+[source,bash]
+----
+task run
+----
+
+.クラスタの状態確認と、起動しているPodsへの疎通確認
+[source,bash]
+----
+task check
+----
+
+.クラスタに作った各種リソースの削除
+[source,bash]
+----
+task k8s:clear
+----
