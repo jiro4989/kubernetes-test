@@ -1,61 +1,61 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "k8s.fullname" . }}
+  name: app
   labels:
-    {{- include "k8s.labels" . | nindent 4 }}
+    app: app
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  replicas: 3
   selector:
     matchLabels:
-      {{- include "k8s.selectorLabels" . | nindent 6 }}
+      app: app
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       labels:
-        {{- include "k8s.selectorLabels" . | nindent 8 }}
+        app: app
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "k8s.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      - name: app
+        image: app # 手元でビルドした app コンテナのイメージ名
+        imagePullPolicy: IfNotPresent # 先にローカルにimageが存在するかをチェックする
+        ports:
+        - containerPort: 1234 # appコンテナのlistenポート
+        envFrom:
+        - configMapRef:
+            name: app
+        volumeMounts:
+        - name: app-volume
+          mountPath: /etc/app
+      volumes:
+        # configmap.yamlで作成するConfigMapを設定
+        - name: app-volume
+          configMap:
+            name: app-volume
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: internal-api
+  labels:
+    app: internal-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: internal-api
+  template:
+    metadata:
+      labels:
+        app: internal-api
+    spec:
+      containers:
+      - name: internal-api
+        image: internal-api # 手元でビルドした app コンテナのイメージ名
+        imagePullPolicy: IfNotPresent # 先にローカルにimageが存在するかをチェックする
+        ports:
+        - containerPort: 1235 # appコンテナのlistenポート
+        env:
+        - name: SERVER_PORT
+          value: "1235"
