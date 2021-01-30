@@ -7,6 +7,11 @@ HelmのValuesを上書きする形でChartに取り込むことで、ビルド�
 
 https://skaffold.dev/docs/pipeline-stages/deployers/helm/
 
+`skaffold dev` をTaskfile.ymlに書こうかと思ったけれど、どうもCtrl-Cで実行してる
+タスクを停止したときに、うまくシグナルがskaffoldに伝わらないらしく、skaffoldが自
+動でやってくれるリソースの後始末をやってくれなかった。よって、しかたなく
+`skaffold dev` はTaskには定義せずに手打ちする。
+
 == 用語
 
 === Skaffold
