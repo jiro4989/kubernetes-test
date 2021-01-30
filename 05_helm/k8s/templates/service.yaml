@@ -11,7 +11,7 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: {{ $v.targetPort }}
-    {{- if eq $v.name "NodePort" }}
+    {{- if eq $v.type "NodePort" }}
     nodePort: {{ $v.nodePort }}
     {{- end }}
 ---
