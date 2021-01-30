@@ -52,12 +52,12 @@ tasks:
     cmds:
       - test ! "{{.CHART}}" = "" # Validation
       - test ! "{{.BASE_CHART}}" = "" # Validation
-      - test -d {{.CHART}} && rm -rf {{.CHART}}
+      - test -d "{{.CHART}}" && rm -rf "{{.CHART}}"
       - helm create {{.CHART}}
-      - helm inspect chart {{.BASE_CHART}} > {{.CHART}}/Chart.yaml
-      - helm inspect values {{.BASE_CHART}} > {{.CHART}}/values.yaml
-      - rm -rf {{.CHART}}/templates/*
-      - touch {{.CHART}}/templates/.gitkeep
+      - helm inspect chart {{.BASE_CHART}} > "{{.CHART}}/Chart.yaml"
+      - helm inspect values {{.BASE_CHART}} > "{{.CHART}}/values.yaml"
+      - rm -rf "{{.CHART}}/templates"/*
+      - touch "{{.CHART}}/templates"/.gitkeep
 
   helm:create:loki:
     desc: "loki chartを生成する"
