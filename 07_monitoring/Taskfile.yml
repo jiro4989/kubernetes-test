@@ -54,6 +54,8 @@ tasks:
       - helm create monitoring
       - helm inspect chart loki/loki-stack > monitoring/Chart.yaml
       - helm inspect values loki/loki-stack > monitoring/values.yaml
+      - rm -rf monitoring/templates/*
+      - touch monitoring/templates/.gitkeep
 
   helm:inspect:loki:
     desc: "lokiのyaml情報を確認する"
