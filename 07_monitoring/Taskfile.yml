@@ -41,6 +41,17 @@ tasks:
     cmds:
       - kubectl get all -n {{.NAMESPACE}}
 
+  helm:setup:
+    desc: "helmのリポジトリをセットアップする"
+    cmds:
+      - helm repo add loki https://grafana.github.io/loki/charts
+      - helm repo update
+
+  helm:inspect:loki:
+    desc: "lokiのyaml情報を確認する"
+    cmds:
+      - helm inspect chart loki/loki-stack
+
   check:
     desc: "Podsとの疎通確認を行う"
     cmds:
