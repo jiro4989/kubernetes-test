@@ -2,14 +2,23 @@
 :toc: left
 :sectnums:
 
+アプリケーションのログ確認は `kubectl logs` コマンドで実施できる。
+しかし、ポッドが複数起動して、開発中で何度もデバッグをしないといけない時に、
+いちいち上記のコマンドを入力するのは手間。
+
+ということでTUIでKubernetesクラスタの状態を確認できるように
+https://github.com/derailed/k9s[k9s]というツールを導入する。
+
+インストール設定はTaskfile.ymlに書いているので、 `task setup` でインストールされる。
+
+インストール後は `skaffold dev` で環境を起動した後に、別端末を開いて `k9s` と実行するだけ。
+あとは画面に表示されるヘルプを見ながら操作をすれば良い。
+
+これでkubectlコマンドともおさらばできるかもしれない。
 
 == 用語
 
-=== Skaffold
-
-Googleが提供するKubernetes用のビルド・デプロイ自動化ツール。
-
-https://github.com/GoogleContainerTools/skaffold
+なし
 
 == 構成
 
