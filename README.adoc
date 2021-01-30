@@ -37,3 +37,19 @@ Server Version: version.Info{Major:"1", Minor:"19", GitVersion:"v1.19.3", GitCom
 | ツール | 説明
 | https://github.com/go-task/task[go-task] | タスクランナー。Kubernetesとは関係ない。便利なので入れる
 |===========
+
+== ディレクトリ
+
+|===============
+| ディレクトリ | 説明
+| 01_simple | 最小構成のKubernetes
+| 02_config | ConfigMapを使って設定ファイルをPods内に取り込む
+| 03_namespace | namespaceでリソースを分離する。まとめて削除する
+| 04_internal_api | Kubernetesクラスタ内からしかアクセスできないPodsを起動する
+| 05_helm | パッケージマネージャのHelmを使う構成にする
+| 06_skaffold | 自動ビルド・デプロイツールのSkaffoldを導入する
+| 07_monitoring | TUIのk9sでKubernetesクラスタを操作できるようにする
+| 08_secret | TODO 秘匿情報をクラスタ内に展開する
+| 09_database | TODO MySQLのPodsを追加して別Podsからアクセスする
+| 10_ingress | TODO ingress使ってなんかやる
+|===============
