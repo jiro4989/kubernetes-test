@@ -2,38 +2,39 @@
 :toc: left
 :sectnums:
 
-単純にSkaffoldを入れるだけだと、ビルドされたイメージを使ってくれない。
-HelmのValuesを上書きする形でChartに取り込むことで、ビルドされたイメージを使うようにする。
+活発に開発をしていると、アプリを修正してコンテナを再ビルドして適用を何度も手動で
+行うのは手間だ。たとえタスクランナーに処理をまとめたとしても、何度も実行するのは
+面倒。これらの問題を解消するために https://skaffold.dev/[skaffold] というツール
+を導入する。
+
+skaffoldを使うと、ファイルの変更監視が始まり、ファイルの更新の都度コンテナイメー
+ジを再ビルドしてKubernetesクラスタに適用してくれるようになる。また、skaffoldを
+Ctrl-Cで停止すると自動で作成された各種リソースを破棄してくれるので、後始末のこと
+も考えなくて良くなる。
+
+また、skaffoldは様々なKubernetesのツールをサポートしており、Helmもまたサポートし
+ている。
+
+ただし、単純にSkaffoldを入れるだけだと、ビルドされたイメージを使ってくれないため、
+設定の微修正が必要。具体的にはhelmのvalues.yamlに、使うイメージ名を設定できるようにする。
+そしてskaffoldのartifactOverridesで、helmのvalues.yamlのイメージ名を上書きできるようにする。
+この時、artifactOverridesのイメージ名にタグ名を書かないようにすること。
 
 https://skaffold.dev/docs/pipeline-stages/deployers/helm/
 
-`skaffold dev` をTaskfile.ymlに書こうかと思ったけれど、どうもCtrl-Cで実行してる
-タスクを停止したときに、うまくシグナルがskaffoldに伝わらないらしく、skaffoldが自
-動でやってくれるリソースの後始末をやってくれなかった。よって、しかたなく
-`skaffold dev` はTaskには定義せずに手打ちする。
+`skaffold dev` をTaskfile.ymlに書こうかと思ったけれど、
+どうもgo-taskを経由するとCtrl-Cで実行してる タスクを停止したときに、
+うまくシグナルがskaffoldに伝わらないらしく、
+skaffoldが自動でやってくれるリソースの後始末をやってくれなかった。
+よって、しかたなく `skaffold dev` はTaskには定義せずに手打ちすることとした。
 
 == 用語
 
 === Skaffold
 
-Kubernetesの事実上デファクトスタンダードになっているパッケージマネージャ
+Googleが提供するKubernetes用のビルド・デプロイ自動化ツール。
 
-https://github.com/helm/helm
-
-=== Chart
-
-Kubernetestのリソース定義をまとめたもの。
-ChartにKubernetesのServiceやDeployment、ConfigMapなどの各種リソースを定義す
-る。
-これらはGoのテンプレート構文を利用した `templates` を書いて表現する。
-テンプレート内に展開される文字は `values.yaml` に書く。
-
-Chartのユーザはコマンドラインで設定値を上書きしたり、追加で `values.yaml` を指定
-して上書きしたりしてインストールする。
-
-=== Release
-
-TBD
+https://github.com/GoogleContainerTools/skaffold
 
 == 構成
 
