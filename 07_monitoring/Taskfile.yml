@@ -58,3 +58,8 @@ tasks:
     cmds:
       - kubectl get pods -n {{.NAMESPACE}}
       - curl http://localhost:30001
+
+  ui:
+    desc: "k9sを使ってUIでKubernetesを操作する"
+    cmds:
+      - k9s
