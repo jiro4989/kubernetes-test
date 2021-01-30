@@ -5,10 +5,10 @@ promtail:
   enabled: true
 
 fluent-bit:
-  enabled: true
+  enabled: false
 
 grafana:
-  enabled: true
+  enabled: false
   sidecar:
     datasources:
       enabled: true
