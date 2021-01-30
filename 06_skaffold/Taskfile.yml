@@ -10,6 +10,7 @@ tasks:
     desc: "必要な外部コマンドをインストールする"
     cmds:
       - task: setup:helm
+      - task: setup:skaffold
 
   setup:helm:
     desc: "helmをインストールする"
@@ -26,6 +27,15 @@ tasks:
         sudo ln -sfn $PWD/linux-amd64/helm /usr/local/bin/helm
     status:
       - which helm
+
+  setup:skaffold:
+    desc: "skaffoldをインストールする"
+    dir: /tmp
+    cmds:
+      - curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+      - sudo install -m 0755 skaffold /usr/local/bin/
+    status:
+      - which skaffold
 
   docker:build:all:
     desc: "必要なすべてのコンテナのイメージをビルドする"

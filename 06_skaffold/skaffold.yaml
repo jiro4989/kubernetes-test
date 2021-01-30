@@ -1,0 +1,23 @@
+apiVersion: skaffold/v2beta11
+kind: Config
+
+build:
+  artifacts:
+    - image: app
+      context: ./app
+      docker:
+        dockerfile: Dockerfile
+        target: runtime
+    - image: internal-api
+      context: ./internal-api
+      docker:
+        dockerfile: Dockerfile
+        target: runtime
+
+deploy:
+  helm:
+    releases:
+      - name: lmocal-test
+        chartPath: ./k8s
+        namespace: local
+        createNamespace: true
