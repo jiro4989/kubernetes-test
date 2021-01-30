@@ -60,22 +60,19 @@ tasks:
 
   k8s:apply:
     desc: "マニフェストファイルをKubernetesクラスタに適用する"
-    dir: manifest
     cmds:
-      - helm install ./k8s
+      - helm install local-test ./k8s
       - sleep 3
       - task: k8s:get:all
 
   k8s:clear:
     desc: "作成したリソースを削除する"
-    dir: manifest
     cmds:
       - task: k8s:delete:namespace
       - task: k8s:get:all
 
   k8s:get:all:
     desc: "名前空間配下のすべてのリソースを表示する"
-    dir: manifest
     cmds:
       - kubectl get all -n {{.NAMESPACE}}
 
