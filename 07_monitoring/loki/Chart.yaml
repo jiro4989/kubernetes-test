@@ -40,4 +40,3 @@ name: loki-stack
 sources:
 - https://github.com/grafana/loki
 version: 2.3.1
-

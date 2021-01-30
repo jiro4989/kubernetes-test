@@ -16,10 +16,10 @@ grafana:
     tag: 6.7.0
 
 prometheus:
-  enabled: false
+  enabled: true
 
 filebeat:
-  enabled: false
+  enabled: true
   filebeatConfig:
     filebeat.yml: |
       # logging.level: debug
@@ -37,7 +37,7 @@ filebeat:
         hosts: ["logstash-loki:5044"]
 
 logstash:
-  enabled: false
+  enabled: true
   image: grafana/logstash-output-loki
   imageTag: 1.0.1
   filters:
