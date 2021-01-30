@@ -46,7 +46,6 @@ tasks:
 
   k8s:create:namespace:
     desc: "名前空間を作成する"
-    dir: manifest
     cmds:
       - kubectl create namespace {{.NAMESPACE}}
     status:
@@ -54,12 +53,13 @@ tasks:
 
   k8s:delete:namespace:
     desc: "名前空間を削除する"
-    dir: manifest
     cmds:
       - kubectl delete namespace {{.NAMESPACE}}
 
   k8s:apply:
     desc: "マニフェストファイルをKubernetesクラスタに適用する"
+    deps:
+      - task: k8s:create:namespace
     cmds:
       - helm install local-test ./k8s
       - sleep 3
@@ -80,7 +80,6 @@ tasks:
     desc: "appコンテナをビルドしてKubernetesクラスタに適用する"
     cmds:
       - task: build:all
-      - task: k8s:create:namespace
       - task: k8s:apply
 
   check:
