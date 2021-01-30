@@ -16,6 +16,6 @@ proc callback(req: Request) {.async.} =
   let data = readFile("/etc/app/config.json")
   {.gcsafe.}:
     let cont = client.getContent(&"{inHost}:{inPort}")
-  await req.respond(Http200, "Hello Nim\n" & data & cont)
+  await req.respond(Http200, "Hello Nim and skaffold\n" & data & cont)
 
 waitFor server.serve(Port(port), callback)
