@@ -1,0 +1,21 @@
+{{- range $i, $v := $.Values.services }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $v.name }}
+data:
+{{ range $key, $val := $v.configMap.data }}
+  {{ $key }}: "{{ $val }}"
+{{ end }}
+---
+{{- end }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-volume
+data:
+  config.json: |
+    {
+      "name":"app",
+      "version":"v1.0.1"
+    }

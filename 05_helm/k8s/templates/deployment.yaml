@@ -1,0 +1,42 @@
+{{- range $i, $v := $.Values.services }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $v.name }}
+  labels:
+    app: {{ $v.name }}
+spec:
+  replicas: {{ $v.replicas }}
+  selector:
+    matchLabels:
+      app: {{ $v.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ $v.name }}
+    spec:
+      containers:
+      - name: {{ $v.name }}
+        image: {{ $v.name }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: {{ $v.targetPort }}
+        env:
+        - name: SERVER_PORT
+          value: "{{ $v.targetPort }}"
+        envFrom:
+        - configMapRef:
+            name: {{ $v.name }}
+{{- if eq $v.name "app" }}
+        volumeMounts:
+        - name: app-volume
+          mountPath: /etc/app
+{{- end }}
+{{- if eq $v.name "app" }}
+      volumes:
+        - name: app-volume
+          configMap:
+            name: app-volume
+{{- end }}
+---
+{{- end }}
