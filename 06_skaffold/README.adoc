@@ -1,37 +1,15 @@
-= 05_helm
+= 06_skaffold
 :toc: left
 :sectnums:
 
-Kubernetesで本格的にマイクロサービスやり始めると、ServiceやらPodやらを追加するた
-びにほとんど同じ構成のYAMLを大量に書く必要が出てくる。それらは大体誰が作っても同
-じもので、可能なら自分で実装したくはない。
+単純にSkaffoldを入れるだけだと、ビルドされたイメージを使ってくれない。
+HelmのValuesを上書きする形でChartに取り込むことで、ビルドされたイメージを使うようにする。
 
-そこでKubernetesの事実上デファクトスタンダードになっているパッケージマネージャの
-https://helm.sh/[Helm]を使う。
-
-Helmのチャートの書き方のベストプラクティスは以下を参照する。
-
-https://helm.sh/docs/chart_best_practices/values/
-
-Helmを使うことでMySQLやRedisなどのよく使うミドルウェアをコマンド一発でインストー
-ルできるようになる。自分でManifestを頑張って書かなくて良い。
-
-また、HelmではReleaseという名前でインストール(`kubectl apply`)の単位をまとめるこ
-とができる。ReleaseにはKubernetesのServiceやPodなどの複数のリソースをまとめるこ
-とができる。
-Releaseごとにインストールし、Releaseごとにロールバックするといったことが可能となる。
-
-また、Releaseに設定する設定値を `values.yaml` に定義できる。
-これにより、本番環境を全部構築するReleaseを作り、環境ごとの設定値の違いを
-`values.yaml` に抜き出すことで、開発環境、検証環境、本番環境といった複数の環境を
-複製することが可能になる。
-
-ここでは一旦Helmを使ってChartを作成し、ReleaseをKubernetesクラスタにデプロイする
-ところまでを行う。複数の環境を作成するのは後に行う。
+https://skaffold.dev/docs/pipeline-stages/deployers/helm/
 
 == 用語
 
-=== Helm
+=== Skaffold
 
 Kubernetesの事実上デファクトスタンダードになっているパッケージマネージャ
 

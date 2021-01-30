@@ -17,7 +17,10 @@ build:
 deploy:
   helm:
     releases:
-      - name: lmocal-test
+      - name: local-test
         chartPath: ./k8s
         namespace: local
         createNamespace: true
+        artifactOverrides:
+          services.app.image: app
+          services.internalApi.image: internal-api
