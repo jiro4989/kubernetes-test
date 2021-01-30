@@ -57,4 +57,5 @@ Server Version: version.Info{Major:"1", Minor:"19", GitVersion:"v1.19.3", GitCom
 | 13_email | TODO mailhogでなんかやる
 | 14_db_migration | TODO DBのマイグレーションが必要になったときになんかやる
 | 15_web_app | TODO とりあえずログインしてなんか操作ができるWebアプリを表示できるようにする
+| 16_environment | TODO 開発環境、検証環境、本番環境を複製できるようにする
 |===============
