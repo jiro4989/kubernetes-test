@@ -53,34 +53,6 @@ tasks:
     cmds:
       - kubectl get all -n {{.NAMESPACE}}
 
-  helm:setup:
-    desc: "helmのリポジトリをセットアップする"
-    cmds:
-      - helm repo add grafana https://grafana.github.io/helm-charts
-      - helm repo add elastic https://helm.elastic.co
-      - helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-      - helm repo update
-
-  helm:create:
-    desc: "chartを生成するタスク"
-    cmds:
-      - test ! "{{.CHART}}" = "" # Validation
-      - test ! "{{.BASE_CHART}}" = "" # Validation
-      - test -d "{{.CHART}}" && rm -rf "{{.CHART}}"
-      - helm create {{.CHART}}
-      - helm inspect chart {{.BASE_CHART}} > "{{.CHART}}/Chart.yaml"
-      - helm inspect values {{.BASE_CHART}} > "{{.CHART}}/values.yaml"
-      - rm -rf "{{.CHART}}/templates"/*
-      - touch "{{.CHART}}/templates"/.gitkeep
-
-  helm:create:loki:
-    desc: "loki chartを生成する"
-    cmds:
-      - task: helm:create
-        vars:
-          CHART: loki
-          BASE_CHART: grafana/loki-stack
-
   check:
     desc: "Podsとの疎通確認を行う"
     cmds:

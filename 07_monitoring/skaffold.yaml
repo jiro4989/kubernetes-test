@@ -24,7 +24,3 @@ deploy:
         artifactOverrides:
           services.app.image: app
           services.internalApi.image: internal-api
-      - name: loki
-        chartPath: ./loki
-        namespace: monitoring
-        createNamespace: true
