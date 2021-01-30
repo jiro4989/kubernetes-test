@@ -23,7 +23,7 @@ spec:
         - containerPort: {{ $v.targetPort }}
         env:
         - name: SERVER_PORT
-          value: {{ $v.targetPort }}
+          value: "{{ $v.targetPort }}"
         envFrom:
         - configMapRef:
             name: {{ $v.name }}
