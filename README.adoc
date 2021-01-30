@@ -20,6 +20,15 @@ Client Version: version.Info{Major:"1", Minor:"19", GitVersion:"v1.19.3", GitCom
 Server Version: version.Info{Major:"1", Minor:"19", GitVersion:"v1.19.3", GitCommit:"1e11e4a2108024935ecfcb2912226cedeafd99df", GitTreeState:"clean", BuildDate:"2020-10-14T12:41:49Z", GoVersion:"go1.15.2", Compiler:"gc", Platform:"linux/amd64"}
 ----
 
+== 構成について
+
+一番最初に最小構成のKubernetesの構成(01_simple)を作成し、以降の連番ディレクトリ
+は、その前の連番に対して改修をいれるのを繰り返す形で作っています。
+いずれのディレクトリも、そのディレクトリ内で完結するように設定しています。
+
+そのディレクトリ配下でのKubernetesの操作方法は、そのディレクトリのREADMEを確認し
+てください。
+
 == 前提条件
 
 以下のツールが必要です
