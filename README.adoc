@@ -52,4 +52,9 @@ Server Version: version.Info{Major:"1", Minor:"19", GitVersion:"v1.19.3", GitCom
 | 08_secret | TODO 秘匿情報をクラスタ内に展開する
 | 09_database | TODO MySQLのPodsを追加して別Podsからアクセスする
 | 10_ingress | TODO ingress使ってなんかやる
+| 11_batch | TODO クラスタ外からアクセスできないバッチPodでなんかやる
+| 12_cron_batch | TODO CronJobでなんかやる
+| 13_email | TODO mailhogでなんかやる
+| 14_db_migration | TODO DBのマイグレーションが必要になったときになんかやる
+| 15_web_app | TODO とりあえずログインしてなんか操作ができるWebアプリを表示できるようにする
 |===============
