@@ -47,6 +47,14 @@ tasks:
       - helm repo add loki https://grafana.github.io/loki/charts
       - helm repo update
 
+  helm:create:monitoring:
+    desc: "monitoring chartを生成する"
+    cmds:
+      - test -d monitoring && rm -rf monitoring
+      - helm create monitoring
+      - helm inspect chart loki/loki-stack > monitoring/Chart.yaml
+      - helm inspect values loki/loki-stack > monitoring/values.yaml
+
   helm:inspect:loki:
     desc: "lokiのyaml情報を確認する"
     cmds:
