@@ -44,7 +44,7 @@ tasks:
   helm:setup:
     desc: "helmのリポジトリをセットアップする"
     cmds:
-      - helm repo add loki https://grafana.github.io/loki/charts
+      - helm repo add grafana https://grafana.github.io/helm-charts
       - helm repo update
 
   helm:create:
@@ -65,12 +65,7 @@ tasks:
       - task: helm:create
         vars:
           CHART: loki
-          BASE_CHART: loki/loki-stack
-
-  helm:inspect:loki:
-    desc: "lokiのyaml情報を確認する"
-    cmds:
-      - helm inspect chart loki/loki-stack
+          BASE_CHART: grafana/loki-stack
 
   check:
     desc: "Podsとの疎通確認を行う"
