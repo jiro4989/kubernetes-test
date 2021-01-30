@@ -1,27 +1,18 @@
+{{- range $i, $v := $.Values.services }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: app
+  name: {{ $v.name }}
 spec:
-  type: NodePort
+  type: {{ $v.type }}
   selector:
-    app: app
+    app: {{ $v.name }}
   ports:
   - protocol: TCP
     port: 80
-    targetPort: 1234 # appコンテナのlistenポート
-    nodePort: 30001 # ホストPCに公開するポート。30000-32767 の範囲で指定可能
-
+    targetPort: {{ $v.targetPort }}
+    {{- if eq $v.name "NodePort" }}
+    nodePort: {{ $v.nodePort }}
+    {{- end }}
 ---
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: internal-api
-spec:
-  selector:
-    app: internal-api
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 1235 # internal-apiコンテナのlistenポート
+{{- end }}

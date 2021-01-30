@@ -62,9 +62,7 @@ tasks:
     desc: "マニフェストファイルをKubernetesクラスタに適用する"
     dir: manifest
     cmds:
-      - kubectl apply -f configmap.yaml -n {{.NAMESPACE}}
-      - kubectl apply -f deployment.yaml -n {{.NAMESPACE}}
-      - kubectl apply -f service.yaml -n {{.NAMESPACE}}
+      - helm install ./k8s
       - sleep 3
       - task: k8s:get:all
 

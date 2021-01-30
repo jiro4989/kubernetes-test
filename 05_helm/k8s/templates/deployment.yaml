@@ -1,61 +1,42 @@
+{{- range $i, $v := $.Values.services }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app
+  name: {{ $v.name }}
   labels:
-    app: app
+    app: {{ $v.name }}
 spec:
-  replicas: 3
+  replicas: {{ $v.replicas }}
   selector:
     matchLabels:
-      app: app
+      app: {{ $v.name }}
   template:
     metadata:
       labels:
-        app: app
+        app: {{ $v.name }}
     spec:
       containers:
-      - name: app
-        image: app # 手元でビルドした app コンテナのイメージ名
-        imagePullPolicy: IfNotPresent # 先にローカルにimageが存在するかをチェックする
+      - name: {{ $v.name }}
+        image: {{ $v.name }}
+        imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 1234 # appコンテナのlistenポート
+        - containerPort: {{ $v.targetPort }}
+        env:
+        - name: SERVER_PORT
+          value: {{ $v.targetPort }}
         envFrom:
         - configMapRef:
-            name: app
+            name: {{ $v.name }}
+{{- if eq $v.name "app" }}
         volumeMounts:
         - name: app-volume
           mountPath: /etc/app
+{{- end }}
+{{- if eq $v.name "app" }}
       volumes:
-        # configmap.yamlで作成するConfigMapを設定
         - name: app-volume
           configMap:
             name: app-volume
-
+{{- end }}
 ---
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: internal-api
-  labels:
-    app: internal-api
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: internal-api
-  template:
-    metadata:
-      labels:
-        app: internal-api
-    spec:
-      containers:
-      - name: internal-api
-        image: internal-api # 手元でビルドした app コンテナのイメージ名
-        imagePullPolicy: IfNotPresent # 先にローカルにimageが存在するかをチェックする
-        ports:
-        - containerPort: 1235 # appコンテナのlistenポート
-        env:
-        - name: SERVER_PORT
-          value: "1235"
+{{- end }}
