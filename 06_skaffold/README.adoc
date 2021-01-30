@@ -52,15 +52,21 @@ taskコマンドを使ってKubernetesを操作します。
 .appコンテナのビルドとKubernetesクラスタへの適用
 [source,bash]
 ----
-task setup
-task run
+skaffold dev
 ----
+
+この状態でskaffoldが待機状態になる。
+ためしにこの状態で app/main.nim を更新してみると、自動でコンテナが再ビルドされる
+ことが確認できる。
 
 .クラスタの状態確認と、起動しているPodsへの疎通確認
 [source,bash]
 ----
 task check
 ----
+
+クラスタに適用した各種リソースは、 `skaffold dev` を停止するときに自動で削除され
+るはずだが、削除されなかった場合は以下のコマンドで後始末できる。
 
 .クラスタに作った各種リソースの削除
 [source,bash]
