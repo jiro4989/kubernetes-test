@@ -1,24 +1,41 @@
-apiVersion: v2
-name: monitoring
-description: A Helm chart for Kubernetes
+apiVersion: v1
+appVersion: v2.0.0
+dependencies:
+- condition: loki.enabled
+  name: loki
+  repository: file://../loki
+  version: ^2.0.0
+- condition: promtail.enabled
+  name: promtail
+  repository: file://../promtail
+  version: ^2.0.0
+- condition: fluent-bit.enabled
+  name: fluent-bit
+  repository: file://../fluent-bit
+  version: ^2.0.0
+- condition: grafana.enabled
+  name: grafana
+  repository: https://grafana.github.io/helm-charts
+  version: ~5.7.0
+- condition: prometheus.enabled
+  name: prometheus
+  repository: https://prometheus-community.github.io/helm-charts
+  version: ~11.16.0
+- condition: filebeat.enabled
+  name: filebeat
+  repository: https://helm.elastic.co
+  version: ~7.8.0
+- condition: logstash.enabled
+  name: logstash
+  repository: https://helm.elastic.co
+  version: ~7.8.0
+deprecated: true
+description: 'DEPRECATED Loki: like Prometheus, but for logs.'
+home: https://grafana.com/loki
+icon: https://raw.githubusercontent.com/grafana/loki/master/docs/sources/logo.png
+kubeVersion: ^1.10.0-0
+name: loki-stack
+sources:
+- https://github.com/grafana/loki
+version: 2.1.2
 
-# A chart can be either an 'application' or a 'library' chart.
-#
-# Application charts are a collection of templates that can be packaged into versioned archives
-# to be deployed.
-#
-# Library charts provide useful utilities or functions for the chart developer. They're included as
-# a dependency of application charts to inject those utilities and functions into the rendering
-# pipeline. Library charts do not define any templates and therefore cannot be deployed.
-type: application
-
-# This is the chart version. This version number should be incremented each time you make changes
-# to the chart and its templates, including the app version.
-# Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.1.0
-
-# This is the version number of the application being deployed. This version number should be
-# incremented each time you make changes to the application. Versions are not expected to
-# follow Semantic Versioning. They should reflect the version the application is using.
-# It is recommended to use it with quotes.
-appVersion: "1.16.0"
