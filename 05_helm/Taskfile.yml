@@ -3,14 +3,15 @@ version: '3'
 vars:
   NAMESPACE: local
   HELM_VERSION: v3.5.0
+  RELEASE_NAME: local-test
 
 tasks:
   setup:
     desc: "必要な外部コマンドをインストールする"
     cmds:
-      - task: install:helm
+      - task: setup:helm
 
-  install:helm:
+  setup:helm:
     desc: "helmをインストールする"
     dir: /usr/local/src
     cmds:
@@ -26,19 +27,19 @@ tasks:
     status:
       - which helm
 
-  build:all:
+  docker:build:all:
     desc: "必要なすべてのコンテナのイメージをビルドする"
     cmds:
-      - task: build:app
-      - task: build:internal-api
+      - task: docker:build:app
+      - task: docker:build:internal-api
 
-  build:app:
+  docker:build:app:
     desc: "appコンテナのイメージをビルドする"
     dir: app
     cmds:
       - docker build -t app .
 
-  build:internal-api:
+  docker:build:internal-api:
     desc: "internal-apiコンテナのイメージをビルドする"
     dir: internal-api
     cmds:
@@ -61,7 +62,14 @@ tasks:
     deps:
       - task: k8s:create:namespace
     cmds:
-      - helm install local-test ./k8s
+      - helm install --debug --dry-run {{.RELEASE_NAME}} ./k8s
+
+  k8s:apply:run:
+    desc: "マニフェストファイルをKubernetesクラスタに適用する"
+    deps:
+      - task: k8s:create:namespace
+    cmds:
+      - task: helm:install
       - sleep 3
       - task: k8s:get:all
 
@@ -70,17 +78,29 @@ tasks:
     cmds:
       - task: k8s:delete:namespace
       - task: k8s:get:all
+      - task: helm:uninstall
+      - helm list
 
   k8s:get:all:
     desc: "名前空間配下のすべてのリソースを表示する"
     cmds:
       - kubectl get all -n {{.NAMESPACE}}
 
+  helm:install:
+    desc: "チャートをインストールする"
+    cmds:
+      - helm install -n {{.NAMESPACE}} {{.RELEASE_NAME}} ./k8s
+
+  helm:uninstall:
+    desc: "チャートをアンインストールする"
+    cmds:
+      - helm uninstall -n {{.NAMESPACE}} {{.RELEASE_NAME}}
+
   run:
     desc: "appコンテナをビルドしてKubernetesクラスタに適用する"
     cmds:
-      - task: build:all
-      - task: k8s:apply
+      - task: docker:build:all
+      - task: k8s:apply:run
 
   check:
     desc: "Podsとの疎通確認を行う"
