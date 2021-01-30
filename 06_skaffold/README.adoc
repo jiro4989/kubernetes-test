@@ -1,0 +1,86 @@
+= 05_helm
+:toc: left
+:sectnums:
+
+Kubernetesで本格的にマイクロサービスやり始めると、ServiceやらPodやらを追加するた
+びにほとんど同じ構成のYAMLを大量に書く必要が出てくる。それらは大体誰が作っても同
+じもので、可能なら自分で実装したくはない。
+
+そこでKubernetesの事実上デファクトスタンダードになっているパッケージマネージャの
+https://helm.sh/[Helm]を使う。
+
+Helmのチャートの書き方のベストプラクティスは以下を参照する。
+
+https://helm.sh/docs/chart_best_practices/values/
+
+Helmを使うことでMySQLやRedisなどのよく使うミドルウェアをコマンド一発でインストー
+ルできるようになる。自分でManifestを頑張って書かなくて良い。
+
+また、HelmではReleaseという名前でインストール(`kubectl apply`)の単位をまとめるこ
+とができる。ReleaseにはKubernetesのServiceやPodなどの複数のリソースをまとめるこ
+とができる。
+Releaseごとにインストールし、Releaseごとにロールバックするといったことが可能となる。
+
+また、Releaseに設定する設定値を `values.yaml` に定義できる。
+これにより、本番環境を全部構築するReleaseを作り、環境ごとの設定値の違いを
+`values.yaml` に抜き出すことで、開発環境、検証環境、本番環境といった複数の環境を
+複製することが可能になる。
+
+ここでは一旦Helmを使ってChartを作成し、ReleaseをKubernetesクラスタにデプロイする
+ところまでを行う。複数の環境を作成するのは後に行う。
+
+== 用語
+
+=== Helm
+
+Kubernetesの事実上デファクトスタンダードになっているパッケージマネージャ
+
+https://github.com/helm/helm
+
+=== Chart
+
+Kubernetestのリソース定義をまとめたもの。
+ChartにKubernetesのServiceやDeployment、ConfigMapなどの各種リソースを定義す
+る。
+これらはGoのテンプレート構文を利用した `templates` を書いて表現する。
+テンプレート内に展開される文字は `values.yaml` に書く。
+
+Chartのユーザはコマンドラインで設定値を上書きしたり、追加で `values.yaml` を指定
+して上書きしたりしてインストールする。
+
+=== Release
+
+TBD
+
+== 構成
+
+|======
+| ディレクトリ | 説明
+| app | シンプルなGoのWebサーバ。1234ポートをlistenする
+| internal-api | 内部API。1235ポートをlistenする
+| k8s | HelmのChartディレクトリ
+|======
+
+== 動作方法
+
+taskコマンドを使ってKubernetesを操作します。
+処理内容についてはTaskfile.ymlを見てください。
+
+.appコンテナのビルドとKubernetesクラスタへの適用
+[source,bash]
+----
+task setup
+task run
+----
+
+.クラスタの状態確認と、起動しているPodsへの疎通確認
+[source,bash]
+----
+task check
+----
+
+.クラスタに作った各種リソースの削除
+[source,bash]
+----
+task k8s:clear
+----
