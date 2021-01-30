@@ -47,15 +47,25 @@ tasks:
       - helm repo add loki https://grafana.github.io/loki/charts
       - helm repo update
 
-  helm:create:monitoring:
-    desc: "monitoring chartを生成する"
+  helm:create:
+    desc: "chartを生成するタスク"
     cmds:
-      - test -d monitoring && rm -rf monitoring
-      - helm create monitoring
-      - helm inspect chart loki/loki-stack > monitoring/Chart.yaml
-      - helm inspect values loki/loki-stack > monitoring/values.yaml
-      - rm -rf monitoring/templates/*
-      - touch monitoring/templates/.gitkeep
+      - test ! "{{.CHART}}" = "" # Validation
+      - test ! "{{.BASE_CHART}}" = "" # Validation
+      - test -d {{.CHART}} && rm -rf {{.CHART}}
+      - helm create {{.CHART}}
+      - helm inspect chart {{.BASE_CHART}} > {{.CHART}}/Chart.yaml
+      - helm inspect values {{.BASE_CHART}} > {{.CHART}}/values.yaml
+      - rm -rf {{.CHART}}/templates/*
+      - touch {{.CHART}}/templates/.gitkeep
+
+  helm:create:loki:
+    desc: "loki chartを生成する"
+    cmds:
+      - task: helm:create
+        vars:
+          CHART: loki
+          BASE_CHART: loki/loki-stack
 
   helm:inspect:loki:
     desc: "lokiのyaml情報を確認する"
