@@ -1,28 +1,20 @@
-= 07_monitoring
+= 08_secret
 :toc: left
 :sectnums:
 
-アプリケーションのログ確認は `kubectl logs` コマンドで実施できる。
-しかし、ポッドが複数起動して、開発中で何度もデバッグをしないといけない時に、
-いちいち上記のコマンドを入力するのは手間。
+Kubernetesでは秘匿情報の管理にSecretというものを使う。
+SecretにはConfigMapと同じような設定を書けるのだが、設定値をBase64エンコードして書く。
+ただしBase64は暗号化ではなく符号化なので、そのままGitHubなどの公開された場所にアップロードするのは危険。
 
-ということでTUIでKubernetesクラスタの状態を確認できるように
-https://github.com/derailed/k9s[k9s]というツールを導入する。
+今回のサンプルではとりあえずSecretの使い方を理解するためにどうでもいいデータをSecretにそのまま書いている。
+本来であれば、そのあたりセキュアな方法でSecretを管理する必要がある。
 
-インストール設定はTaskfile.ymlに書いているので、 `task setup` でインストールされる。
+使ったことは無いがhttps://github.com/bitnami-labs/sealed-secrets[SealedSecrets]というツールが良さそうだった。
 
-インストール後は `skaffold dev` で環境を起動した後に、別端末を開いて `k9s` と実行するだけ。
-あとは画面に表示されるヘルプを見ながら操作をすれば良い。
-（おまけで `task ui` でも実行できるようにした)
+このサンプルで追加した内容としては、以下
 
-これでkubectlコマンドともおさらばできるかもしれない。
-
-== 余談
-
-当初はgrafanaが提供するloki-stackというHelmチャートをインストールして、ブラウザでログを確認できるようにしたかった。
-
-が、ローカル開発で使うには大掛かりすぎるのでやっぱりやめた。作りかけのものはブランチに残している。
-必要になったらブランチから掘り起こせば良いだろう。
+. templates にsecret.yamlを追加
+. deployment.yaml に secretRef を追加
 
 == 用語
 
