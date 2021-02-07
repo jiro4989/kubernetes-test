@@ -4,12 +4,15 @@ vars:
   NAMESPACE: local
   HELM_VERSION: v3.5.0
   K8S_VERSION: v0.24.2
+  TODAY:
+    sh: date +%Y%m%d
 
 tasks:
   setup:
     desc: "必要な外部コマンドをインストールする"
     cmds:
       - task: setup:helm
+      - task: setup:helm:repo
       - task: setup:skaffold
       - task: setup:k9s
 
@@ -28,6 +31,17 @@ tasks:
         sudo ln -sfn $PWD/linux-amd64/helm /usr/local/bin/helm
     status:
       - which helm
+
+  setup:helm:repo:
+    desc: "helmのリポジトリをセットアップする"
+    cmds:
+      - helm repo add bitnami https://charts.bitnami.com/bitnami
+      - helm repo update
+      - helm install {{.RELEASE_NAME}} bitnami/mysql
+    vars:
+      RELEASE_NAME: mysql-{{.TODAY}}
+    status:
+      - helm list | grep -c {{.RELEASE_NAME}}
 
   setup:skaffold:
     desc: "skaffoldをインストールする"
@@ -52,6 +66,17 @@ tasks:
     desc: "名前空間配下のすべてのリソースを表示する"
     cmds:
       - kubectl get all -n {{.NAMESPACE}}
+
+  k8s:clear:
+    desc: "名前空間配下のすべてのリソースを削除する"
+    cmds:
+      - kubectl delete namespace {{.NAMESPACE}}
+
+  helm:show:
+    desc: "helm chart情報を表示する"
+    cmds:
+      - helm show chart bitnami/mysql
+      - helm show values bitnami/mysql
 
   check:
     desc: "Podsとの疎通確認を行う"

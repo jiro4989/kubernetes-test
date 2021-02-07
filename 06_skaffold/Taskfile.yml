@@ -41,6 +41,11 @@ tasks:
     cmds:
       - kubectl get all -n {{.NAMESPACE}}
 
+  k8s:clear:
+    desc: "名前空間配下のすべてのリソースを削除する"
+    cmds:
+      - kubectl delete namespace {{.NAMESPACE}}
+
   check:
     desc: "Podsとの疎通確認を行う"
     cmds:
