@@ -49,7 +49,7 @@ Server Version: version.Info{Major:"1", Minor:"19", GitVersion:"v1.19.3", GitCom
 | 05_helm | パッケージマネージャのHelmを使う構成にする
 | 06_skaffold | 自動ビルド・デプロイツールのSkaffoldを導入する
 | 07_monitoring | TUIのk9sでKubernetesクラスタを操作できるようにする
-| 08_secret | TODO 秘匿情報をクラスタ内に展開する
+| 08_secret | 秘匿情報をクラスタ内に展開する
 | 09_database | TODO MySQLのPodsを追加して別Podsからアクセスする
 | 10_ingress | TODO ingress使ってなんかやる
 | 11_batch | TODO クラスタ外からアクセスできないバッチPodでなんかやる
