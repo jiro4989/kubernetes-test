@@ -1,0 +1,60 @@
+= 08_secret
+:toc: left
+:sectnums:
+
+Kubernetesでは秘匿情報の管理にSecretというものを使う。
+SecretにはConfigMapと同じような設定を書けるのだが、設定値をBase64エンコードして書く。
+ただしBase64は暗号化ではなく符号化なので、そのままGitHubなどの公開された場所にアップロードするのは危険。
+
+今回のサンプルではとりあえずSecretの使い方を理解するためにどうでもいいデータをSecretにそのまま書いている。
+本来であれば、そのあたりセキュアな方法でSecretを管理する必要がある。
+
+使ったことは無いがhttps://github.com/bitnami-labs/sealed-secrets[SealedSecrets]というツールが良さそうだった。
+
+このサンプルで追加した内容としては、以下
+
+. templates にsecret.yamlを追加
+. deployment.yaml に secretRef を追加
+
+== 用語
+
+なし
+
+== 構成
+
+|======
+| ディレクトリ | 説明
+| app | シンプルなGoのWebサーバ。1234ポートをlistenする
+| internal-api | 内部API。1235ポートをlistenする
+| k8s | HelmのChartディレクトリ
+|======
+
+== 動作方法
+
+taskコマンドを使ってKubernetesを操作します。
+処理内容についてはTaskfile.ymlを見てください。
+
+.appコンテナのビルドとKubernetesクラスタへの適用
+[source,bash]
+----
+skaffold dev
+----
+
+この状態でskaffoldが待機状態になる。
+ためしにこの状態で app/main.nim を更新してみると、自動でコンテナが再ビルドされる
+ことが確認できる。
+
+.クラスタの状態確認と、起動しているPodsへの疎通確認
+[source,bash]
+----
+task check
+----
+
+クラスタに適用した各種リソースは、 `skaffold dev` を停止するときに自動で削除され
+るはずだが、削除されなかった場合は以下のコマンドで後始末できる。
+
+.クラスタに作った各種リソースの削除
+[source,bash]
+----
+task k8s:clear
+----
