@@ -23,28 +23,28 @@ services:
         DB_PASSWORD: "root"
         DB_NAME: "test"
 
-# mysql:
-#   auth:
-#     # 練習リポジトリなのでベタ書きでいいけれど、
-#     # 本来はこういうのは良くない
-#     rootPassword: password
-# 
-#   initdbScripts:
-#     testdb.sql: |
-#       show databases;
-#     # createdb.sql: |-
-#     #   CREATE DATABASE IF NOT EXISTS test;
-#     #   use test;
-#     # 
-#     #   CREATE TABLE IF NOT EXISTS `users` (
-#     #       PRIMARY KEY (id),
-#     #       id    INT(5)       NOT NULL,
-#     #       name  VARCHAR(255) NOT NULL,
-#     #       email VARCHAR(255) NOT NULL
-#     #   );
-#     # 
-#     #   INSERT INTO `users` (
-#     #     id, name, email
-#     #   ) VALUES (
-#     #     1, 'taro', 'taro@example.com'
-#     #   );
+mysql:
+  auth:
+    # 練習リポジトリなのでベタ書きでいいけれど、
+    # 本来はこういうのは良くない
+    rootPassword: password
+
+  initdbScripts:
+    testdb.sql: |
+      show databases;
+    createdb.sql: |-
+      CREATE DATABASE IF NOT EXISTS test;
+      use test;
+
+      CREATE TABLE IF NOT EXISTS `users` (
+          PRIMARY KEY (id),
+          id    INT(5)       NOT NULL,
+          name  VARCHAR(255) NOT NULL,
+          email VARCHAR(255) NOT NULL
+      );
+
+      INSERT INTO `users` (
+        id, name, email
+      ) VALUES (
+        1, 'taro', 'taro@example.com'
+      );
