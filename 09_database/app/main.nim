@@ -20,4 +20,6 @@ proc callback(req: Request) {.async.} =
     let cont = client.getContent(&"{inHost}:{inPort}") & "\nUSERNAME = " & userName & ", PASSWORD = " & password
   await req.respond(Http200, "Hello Nim and skaffold\n" & data & cont)
 
+echo "start app. listen = " & $port
+
 waitFor server.serve(Port(port), callback)

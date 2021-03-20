@@ -19,4 +19,7 @@ proc callback(req: Request) {.async.} =
   await req.respond(Http200, "Hello Nim internal and skaffold" & $rows)
 
 let port = getEnv("SERVER_PORT").parseInt
+
+echo "start internal-api. listen = " & $port
+
 waitFor server.serve(Port(port), callback)
