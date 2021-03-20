@@ -7,5 +7,6 @@ RUN nim c -o:app main.nim
 FROM alpine:3.13 AS runtime
 
 COPY --from=builder /app/app /app
+RUN apk add mysql
 
 ENTRYPOINT ["/app"]
