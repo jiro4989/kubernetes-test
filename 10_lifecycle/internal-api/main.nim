@@ -1,11 +1,21 @@
 import asynchttpserver, asyncdispatch
 from strutils import parseInt
 from os import getEnv
+import json
 
-var server = newAsyncHttpServer()
+# 外部ライブラリ
+import jester
 
-proc callback(req: Request) {.async.} =
-  await req.respond(Http200, "Hello Nim internal and skaffold")
+let port = getEnv("SERVER_PORT").parseInt.Port
 
-let port = getEnv("SERVER_PORT").parseInt
-waitFor server.serve(Port(port), callback)
+router myrouter:
+  get "/":
+    resp( % "Internal API")
+  get "/healthz":
+    resp %*{
+      "status": "ok",
+    }
+
+var serverSettings = newSettings(port = port)
+var server = initJester(myrouter, settings = serverSettings)
+server.serve()
