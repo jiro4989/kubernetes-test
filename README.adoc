@@ -35,6 +35,7 @@ Server Version: version.Info{Major:"1", Minor:"19", GitVersion:"v1.19.3", GitCom
 
 |===========
 | ツール | 説明
+
 | https://github.com/go-task/task[go-task] | タスクランナー。Kubernetesとは関係ない。便利なので入れる
 |===========
 
@@ -42,6 +43,7 @@ Server Version: version.Info{Major:"1", Minor:"19", GitVersion:"v1.19.3", GitCom
 
 |===============
 | ディレクトリ | 説明
+
 | 01_simple | 最小構成のKubernetes
 | 02_config | ConfigMapを使って設定ファイルをPods内に取り込む
 | 03_namespace | namespaceでリソースを分離する。まとめて削除する
@@ -50,12 +52,13 @@ Server Version: version.Info{Major:"1", Minor:"19", GitVersion:"v1.19.3", GitCom
 | 06_skaffold | 自動ビルド・デプロイツールのSkaffoldを導入する
 | 07_monitoring | TUIのk9sでKubernetesクラスタを操作できるようにする
 | 08_secret | 秘匿情報をクラスタ内に展開する
-| 09_database | TODO MySQLのPodsを追加して別Podsからアクセスする
-| 10_ingress | TODO ingress使ってなんかやる
-| 11_batch | TODO クラスタ外からアクセスできないバッチPodでなんかやる
-| 12_cron_batch | TODO CronJobでなんかやる
-| 13_environment | TODO 開発環境、検証環境、本番環境を複製できるようにする
-| 14_web_app | TODO とりあえずログインしてなんか操作ができるWebアプリを表示できるようにする
-| 15_db_migration | TODO DBのマイグレーションが必要になったときになんかやる
-| 16_email | TODO mailhogでなんかやる
+| 09_resources | リソース要求、リソース制限を設定する
+| 00_database | TODO MySQLのPodsを追加して別Podsからアクセスする
+| 00_ingress | TODO ingress使ってなんかやる
+| 00_batch | TODO クラスタ外からアクセスできないバッチPodでなんかやる
+| 00_cron_batch | TODO CronJobでなんかやる
+| 00_environment | TODO 開発環境、検証環境、本番環境を複製できるようにする
+| 00_web_app | TODO とりあえずログインしてなんか操作ができるWebアプリを表示できるようにする
+| 00_db_migration | TODO DBのマイグレーションが必要になったときになんかやる
+| 00_email | TODO mailhogでなんかやる
 |===============
