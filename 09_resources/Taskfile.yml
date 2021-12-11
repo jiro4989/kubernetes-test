@@ -63,3 +63,15 @@ tasks:
     desc: "k9sを使ってUIでKubernetesを操作する"
     cmds:
       - k9s
+
+  get:resources:
+    desc: "PodのCPU使用率とメモリ使用率を出力する"
+    cmds:
+      - |
+        kubectl get pods -n local |
+        grep -e '^app' -e '^internal-api' |
+        awk '{print $1}' |
+        xargs -I@ bash -c 'echo @; kubectl exec @ -n local -- cat /sys/fs/cgroup/cpuacct/cpuacct.usage /sys/fs/cgroup/memory/memory.usage_in_bytes' |
+        xargs -n 3 |
+        awk 'BEGIN{print "pod_name cpu_usage memory_usage"} {print}' |
+        column -t
