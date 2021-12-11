@@ -4,7 +4,7 @@ services:
     image: app
     type: NodePort
     targetPort: 1234
-    nodePort: 30001
+    nodePort: 30002
     replicas: 3
     configMap:
       data:
