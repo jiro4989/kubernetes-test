@@ -29,6 +29,17 @@ Server Version: version.Info{Major:"1", Minor:"19", GitVersion:"v1.19.3", GitCom
 そのディレクトリ配下でのKubernetesの操作方法は、そのディレクトリのREADMEを確認し
 てください。
 
+各ディレクトリ毎にどのような変更が加えられたか確認したい場合は、以下のコマンドを
+実行してください。
+
+[source,bash]
+----
+diff -ru {比較元ディレクトリ} {比較先ディレクトリ} | view -
+
+# ex:
+diff -ru 09_resources/ 10_lifecycle/ | view -
+----
+
 == 前提条件
 
 以下のツールが必要です
