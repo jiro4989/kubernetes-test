@@ -1,0 +1,9 @@
+---
+# Namespace内でPod起動数に上限を設ける
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: resourcequota
+spec:
+  hard:
+    pods: "30"

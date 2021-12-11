@@ -1,0 +1,16 @@
+---
+# Namespace内で有効なリソース制限、リソース要求。設定漏れが発生した時の予防策と
+# してのみ使うべきで、基本的には各コンテナごとに明示的に設定するべき。
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: limitrange
+spec:
+  limits:
+    - default:
+        cpu: "500m"
+        memory: "256Mi"
+      defaultRequest:
+        cpu: "200m"
+        memory: "128Mi"
+      type: Container
