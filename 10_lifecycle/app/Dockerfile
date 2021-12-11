@@ -1,11 +1,11 @@
-FROM nimlang/nim:1.4.2-alpine AS builder
+FROM nimlang/nim:1.6.0-alpine AS builder
 
 WORKDIR /app
 COPY . /app
-RUN nim c -o:app main.nim
+RUN nimble build -Y
 
 FROM alpine:3.13 AS runtime
 
-COPY --from=builder /app/app /app
+COPY --from=builder /app/main /app
 
 ENTRYPOINT ["/app"]

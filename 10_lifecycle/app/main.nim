@@ -2,23 +2,31 @@ import asynchttpserver, asyncdispatch, httpclient
 from strutils import parseInt
 from os import getEnv
 from strformat import `&`
+import json
+
+# 外部ライブラリ
+import jester
 
 let
-  port = getEnv("SERVER_PORT").parseInt
+  port = getEnv("SERVER_PORT").parseInt.Port
   inHost = getEnv("INTERNAL_API_HOST")
   inPort = getEnv("INTERNAL_API_PORT").parseInt
-  userName = getEnv("USERNAME")
-  password = getEnv("PASSWORD")
   client = newHttpClient()
 
-var
-  server = newAsyncHttpServer()
+router myrouter:
+  get "/":
+    let data = readFile("/etc/app/config.json")
+    {.gcsafe.}:
+      let content = client.getContent(&"{inHost}:{inPort}")
+    resp %*{
+      "content": content,
+      "data": data,
+    }
+  get "/healthz":
+    resp %*{
+      "status": "ok",
+    }
 
-proc callback(req: Request) {.async.} =
-  let data = readFile("/etc/app/config.json")
-  {.gcsafe.}:
-    let cont = client.getContent(&"{inHost}:{inPort}") & "\nUSERNAME = " &
-        userName & ", PASSWORD = " & password
-  await req.respond(Http200, "Hello Nim and skaffold\n" & data & cont)
-
-waitFor server.serve(Port(port), callback)
+var serverSettings = newSettings(port = port)
+var server = initJester(myrouter, settings = serverSettings)
+server.serve()
