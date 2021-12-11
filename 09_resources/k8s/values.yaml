@@ -14,6 +14,9 @@ services:
       requests:
         memory: "25Mi"
         cpu: "100m"
+      limits:
+        memory: "100Mi"
+        cpu: "300m"
   internalApi:
     name: internal-api
     image: internal-api
@@ -27,3 +30,6 @@ services:
       requests:
         memory: "50Mi"
         cpu: "100m"
+      limits:
+        memory: "100Mi"
+        cpu: "300m"

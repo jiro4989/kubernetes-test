@@ -33,6 +33,9 @@ spec:
           requests:
             memory: "{{ $v.resources.requests.memory }}"
             cpu: "{{ $v.resources.requests.cpu }}"
+          limits:
+            memory: "{{ $v.resources.limits.memory }}"
+            cpu: "{{ $v.resources.limits.cpu }}"
 {{- if eq $v.name "app" }}
         volumeMounts:
         - name: app-volume
