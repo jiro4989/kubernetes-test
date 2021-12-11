@@ -1,12 +1,17 @@
-= 09_resources
+= 10_lifecycle
 :toc: left
 :sectnums:
 
-クラスタをフル活用するためにリソース最適化を行う。
-リソース要求、リソース制限を行うことで、コンテナのメモリ不足やメモリ専有を防ぐ。
+コンテナが死んだと判定する条件や、起動できる上限の設定、コンテナを破棄したいけれ
+ど管理者が分からないなどの問題を解消する。
 
-. deployment.yaml に resources.requests を追加
-. deployment.yaml に resources.limits を追加
+. deployment.yaml に readinessProbe を追加。
+  いわゆるヘルスチェック。
+  これに失敗するとこのPodに対してリクエストは流れなくなる
+. pod_disruption_budge.yaml を追加
+. resource_quota.yaml を追加
+. limit_range.yaml を追加
+. deployment.yaml に annotations.owner を追加
 
 == 用語
 
@@ -16,7 +21,7 @@
 
 |======
 | ディレクトリ | 説明
-| app | シンプルなGoのWebサーバ。1234ポートをlistenする
+| app | シンプルなNimのWebサーバ。1234ポートをlistenする
 | internal-api | 内部API。1235ポートをlistenする
 | k8s | HelmのChartディレクトリ
 |======
