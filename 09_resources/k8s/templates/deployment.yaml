@@ -29,6 +29,10 @@ spec:
             name: {{ $v.name }}
         - secretRef:
             name: common
+        resources:
+          requests:
+            memory: "{{ $v.resources.requests.memory }}"
+            cpu: "{{ $v.resources.requests.cpu }}"
 {{- if eq $v.name "app" }}
         volumeMounts:
         - name: app-volume
