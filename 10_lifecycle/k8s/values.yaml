@@ -1,0 +1,35 @@
+services:
+  app:
+    name: app
+    image: app
+    type: NodePort
+    targetPort: 1234
+    nodePort: 30002
+    replicas: 3
+    configMap:
+      data:
+        INTERNAL_API_HOST: "http://internal-api"
+        INTERNAL_API_PORT: "80"
+    resources:
+      requests:
+        memory: "25Mi"
+        cpu: "100m"
+      limits:
+        memory: "100Mi"
+        cpu: "300m"
+  internalApi:
+    name: internal-api
+    image: internal-api
+    type: ClusterIP
+    targetPort: 1235
+    replicas: 3
+    configMap:
+      data:
+        NONE: "1"
+    resources:
+      requests:
+        memory: "50Mi"
+        cpu: "100m"
+      limits:
+        memory: "100Mi"
+        cpu: "300m"
