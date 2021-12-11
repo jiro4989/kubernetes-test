@@ -2,6 +2,7 @@ services:
   app:
     name: app
     image: app
+    owner: jiro4989
     type: NodePort
     targetPort: 1234
     nodePort: 30002
@@ -20,6 +21,7 @@ services:
   internalApi:
     name: internal-api
     image: internal-api
+    owner: jiro4989
     type: ClusterIP
     targetPort: 1235
     replicas: 3

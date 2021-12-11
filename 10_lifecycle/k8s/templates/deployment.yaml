@@ -5,6 +5,9 @@ metadata:
   name: {{ $v.name }}
   labels:
     app: {{ $v.name }}
+  annotations:
+    # なぜこのリソースが存在するのか不明になったときに問い合わせる目的
+    owner: {{ $v.owner }}
 spec:
   replicas: {{ $v.replicas }}
   selector:
