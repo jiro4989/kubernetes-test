@@ -36,6 +36,12 @@ spec:
           limits:
             memory: "{{ $v.resources.limits.memory }}"
             cpu: "{{ $v.resources.limits.cpu }}"
+        readinessProbe:
+          httpGet:
+            path: "/healthz"
+            port: {{ $v.targetPort }}
+          initialDelaySeconds: 3
+          periodSeconds: 3
 {{- if eq $v.name "app" }}
         volumeMounts:
         - name: app-volume
