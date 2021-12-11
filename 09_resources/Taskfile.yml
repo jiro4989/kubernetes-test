@@ -1,0 +1,65 @@
+version: '3'
+
+vars:
+  NAMESPACE: local
+  HELM_VERSION: v3.5.0
+  K8S_VERSION: v0.24.2
+
+tasks:
+  setup:
+    desc: "必要な外部コマンドをインストールする"
+    cmds:
+      - task: setup:helm
+      - task: setup:skaffold
+      - task: setup:k9s
+
+  setup:helm:
+    desc: "helmをインストールする"
+    dir: /usr/local/src
+    cmds:
+      - sudo install -m 0755 -o $USER -g $USER -d helm/{{.HELM_VERSION}}
+      - |
+        set -eu
+
+        cd helm/{{.HELM_VERSION}}
+        wget https://get.helm.sh/helm-{{.HELM_VERSION}}-linux-amd64.tar.gz
+        tar xzf helm-{{.HELM_VERSION}}-linux-amd64.tar.gz
+        chmod +x linux-amd64/helm
+        sudo ln -sfn $PWD/linux-amd64/helm /usr/local/bin/helm
+    status:
+      - which helm
+
+  setup:skaffold:
+    desc: "skaffoldをインストールする"
+    dir: /tmp
+    cmds:
+      - curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+      - sudo install -m 0755 skaffold /usr/local/bin/
+    status:
+      - which skaffold
+
+  setup:k9s:
+    desc: "k9s(kubectlをTUIで操作できるツール)をインストールする"
+    dir: /tmp
+    cmds:
+      - wget https://github.com/derailed/k9s/releases/download/{{.K8S_VERSION}}/k9s_Linux_x86_64.tar.gz
+      - tar xzf k9s_Linux_x86_64.tar.gz
+      - sudo install -m 0755 k9s /usr/local/bin/
+    status:
+      - which k9s
+
+  k8s:get:all:
+    desc: "名前空間配下のすべてのリソースを表示する"
+    cmds:
+      - kubectl get all -n {{.NAMESPACE}}
+
+  check:
+    desc: "Podsとの疎通確認を行う"
+    cmds:
+      - kubectl get pods -n {{.NAMESPACE}}
+      - curl http://localhost:30001
+
+  ui:
+    desc: "k9sを使ってUIでKubernetesを操作する"
+    cmds:
+      - k9s
