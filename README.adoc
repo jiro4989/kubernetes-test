@@ -53,6 +53,7 @@ Server Version: version.Info{Major:"1", Minor:"19", GitVersion:"v1.19.3", GitCom
 | 07_monitoring | TUIのk9sでKubernetesクラスタを操作できるようにする
 | 08_secret | 秘匿情報をクラスタ内に展開する
 | 09_resources | リソース要求、リソース制限を設定する
+| 10_lifecycle | コンテナのヘルスチェック、リソース制限、管理者の設定など
 | 00_database | TODO MySQLのPodsを追加して別Podsからアクセスする
 | 00_ingress | TODO ingress使ってなんかやる
 | 00_batch | TODO クラスタ外からアクセスできないバッチPodでなんかやる
