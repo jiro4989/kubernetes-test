@@ -54,6 +54,11 @@ tasks:
     cmds:
       - kubectl get all -n {{.NAMESPACE}}
 
+  k8s:clear:
+    desc: "local名前空間を削除する"
+    cmds:
+      - kubectl delete namespaces local
+
   check:
     desc: "Podsとの疎通確認を行う"
     cmds:
