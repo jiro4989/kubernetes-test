@@ -1,17 +1,10 @@
-= 10_lifecycle
+= 11_file_structure
 :toc: left
 :sectnums:
 
-コンテナが死んだと判定する条件や、起動できる上限の設定、コンテナを破棄したいけれ
-ど管理者が分からないなどの問題を解消する。
-
-. deployment.yaml に readinessProbe を追加。
-  いわゆるヘルスチェック。
-  これに失敗するとこのPodに対してリクエストは流れなくなる
-. pod_disruption_budge.yaml を追加
-. resource_quota.yaml を追加
-. limit_range.yaml を追加
-. deployment.yaml に annotations.owner を追加
+ループで記述量を減らすようにtemplateを作っていたけれど、正直分かりづらかったので
+ループしないようにした。ちゃんとサービスごとに個別のService、Deploymentを定義す
+るように変更した。機能的には10から何も増えていない。
 
 == 用語
 
