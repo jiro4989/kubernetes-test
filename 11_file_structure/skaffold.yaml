@@ -1,3 +1,4 @@
+---
 apiVersion: skaffold/v2beta11
 kind: Config
 
@@ -21,6 +22,7 @@ deploy:
         chartPath: ./k8s
         namespace: local
         createNamespace: true
+        # helmのvalues.yamlに定義しているイメージ名を上書きする
         artifactOverrides:
-          services.app.image: app
-          services.internalApi.image: internal-api
+          app.image: app
+          internalApi.image: internal-api

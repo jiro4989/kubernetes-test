@@ -1,18 +1,27 @@
-{{- range $i, $v := $.Values.services }}
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $v.name }}
+  name: app
 spec:
-  type: {{ $v.type }}
+  type: NodePort
   selector:
-    app: {{ $v.name }}
+    app: app
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: {{ $v.targetPort }}
-    {{- if eq $v.type "NodePort" }}
-    nodePort: {{ $v.nodePort }}
-    {{- end }}
+    - protocol: TCP
+      port: 80
+      targetPort: {{ $.Values.app.port }}
+      nodePort: {{ $.Values.nodePort }}
 ---
-{{- end }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: internal-api
+spec:
+  type: ClusterIP
+  selector:
+    app: internal-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: {{ $.Values.internalApi.port }}

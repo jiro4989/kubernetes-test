@@ -1,60 +1,101 @@
-{{- range $i, $v := $.Values.services }}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $v.name }}
+  name: app
   labels:
-    app: {{ $v.name }}
+    app: app
   annotations:
     # なぜこのリソースが存在するのか不明になったときに問い合わせる目的
-    owner: {{ $v.owner }}
+    owner: {{ $.Values.owner }}
 spec:
-  replicas: {{ $v.replicas }}
+  replicas: 3
   selector:
     matchLabels:
-      app: {{ $v.name }}
+      app: app
   template:
     metadata:
       labels:
-        app: {{ $v.name }}
+        app: app
     spec:
       containers:
-      - name: {{ $v.name }}
-        image: {{ $v.image }}
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: {{ $v.targetPort }}
-        env:
-        - name: SERVER_PORT
-          value: "{{ $v.targetPort }}"
-        envFrom:
-        - configMapRef:
-            name: {{ $v.name }}
-        - secretRef:
-            name: common
-        resources:
-          requests:
-            memory: "{{ $v.resources.requests.memory }}"
-            cpu: "{{ $v.resources.requests.cpu }}"
-          limits:
-            memory: "{{ $v.resources.limits.memory }}"
-            cpu: "{{ $v.resources.limits.cpu }}"
-        readinessProbe:
-          httpGet:
-            path: "/healthz"
-            port: {{ $v.targetPort }}
-          initialDelaySeconds: 3
-          periodSeconds: 3
-{{- if eq $v.name "app" }}
-        volumeMounts:
-        - name: app-volume
-          mountPath: /etc/app
-{{- end }}
-{{- if eq $v.name "app" }}
+        - name: app
+          image: {{ $.Values.app.image }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: {{ $v.Values.app.port }}
+          env:
+            - name: SERVER_PORT
+              value: "{{ $v.Values.app.port }}"
+          envFrom:
+            - configMapRef:
+                name: app
+            - secretRef:
+                name: common
+          resources:
+            requests:
+              memory: 25Mi
+              cpu: 100m
+            limits:
+              memory: 100Mi
+              cpu: 300m
+          readinessProbe:
+            httpGet:
+              path: "/healthz"
+              port: {{ $v.Values.app.port }}
+            initialDelaySeconds: 3
+            periodSeconds: 3
+          volumeMounts:
+            - name: app-volume
+              mountPath: /etc/app
       volumes:
         - name: app-volume
           configMap:
             name: app-volume
-{{- end }}
+
 ---
-{{- end }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: internal-api
+  labels:
+    app: internal-api
+  annotations:
+    # なぜこのリソースが存在するのか不明になったときに問い合わせる目的
+    owner: {{ $.Values.owner }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: internal-api
+  template:
+    metadata:
+      labels:
+        app: internal-api
+    spec:
+      containers:
+        - name: internal-api
+          image: {{ $.Values.internalApi.image }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: {{ $.Values.internalApi.port }}
+          env:
+            - name: SERVER_PORT
+              value: "{{ $.Values.internalApi.port }}"
+          envFrom:
+            - secretRef:
+                name: common
+          resources:
+            requests:
+              memory: 50Mi
+              cpu: 100m
+            limits:
+              memory: 100Mi
+              cpu: 300m
+          readinessProbe:
+            httpGet:
+              path: "/healthz"
+              port: {{ $.Values.internalApi.port }}
+            initialDelaySeconds: 3
+            periodSeconds: 3
