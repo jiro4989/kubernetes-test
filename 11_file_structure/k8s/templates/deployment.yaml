@@ -1,0 +1,60 @@
+{{- range $i, $v := $.Values.services }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $v.name }}
+  labels:
+    app: {{ $v.name }}
+  annotations:
+    # なぜこのリソースが存在するのか不明になったときに問い合わせる目的
+    owner: {{ $v.owner }}
+spec:
+  replicas: {{ $v.replicas }}
+  selector:
+    matchLabels:
+      app: {{ $v.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ $v.name }}
+    spec:
+      containers:
+      - name: {{ $v.name }}
+        image: {{ $v.image }}
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: {{ $v.targetPort }}
+        env:
+        - name: SERVER_PORT
+          value: "{{ $v.targetPort }}"
+        envFrom:
+        - configMapRef:
+            name: {{ $v.name }}
+        - secretRef:
+            name: common
+        resources:
+          requests:
+            memory: "{{ $v.resources.requests.memory }}"
+            cpu: "{{ $v.resources.requests.cpu }}"
+          limits:
+            memory: "{{ $v.resources.limits.memory }}"
+            cpu: "{{ $v.resources.limits.cpu }}"
+        readinessProbe:
+          httpGet:
+            path: "/healthz"
+            port: {{ $v.targetPort }}
+          initialDelaySeconds: 3
+          periodSeconds: 3
+{{- if eq $v.name "app" }}
+        volumeMounts:
+        - name: app-volume
+          mountPath: /etc/app
+{{- end }}
+{{- if eq $v.name "app" }}
+      volumes:
+        - name: app-volume
+          configMap:
+            name: app-volume
+{{- end }}
+---
+{{- end }}
