@@ -4,7 +4,7 @@ owner: jiro4989
 app:
   port: 1234
   image: app
-  nodePort: 30002
+  nodePort: 30001
 internalApi:
   port: 1235
   image: internal-api
