@@ -23,10 +23,10 @@ spec:
           image: {{ $.Values.app.image }}
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: {{ $v.Values.app.port }}
+            - containerPort: {{ $.Values.app.port }}
           env:
             - name: SERVER_PORT
-              value: "{{ $v.Values.app.port }}"
+              value: "{{ $.Values.app.port }}"
           envFrom:
             - configMapRef:
                 name: app
@@ -42,7 +42,7 @@ spec:
           readinessProbe:
             httpGet:
               path: "/healthz"
-              port: {{ $v.Values.app.port }}
+              port: {{ $.Values.app.port }}
             initialDelaySeconds: 3
             periodSeconds: 3
           volumeMounts:
